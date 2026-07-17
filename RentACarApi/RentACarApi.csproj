@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.79" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
+    <PackageReference Include="MySqlConnector" Version="2.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\Interfaces\" />
+    <Folder Include="Services\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>
