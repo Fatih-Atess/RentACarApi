@@ -23,7 +23,7 @@ namespace RentACarApi.Repositories
 
             string sql = @"
                 SELECT COUNT(*) FROM Rentals
-                WHERE ID = @AracId
+                WHERE Arac_ID = @AracId
                 AND Baslangic_Tarihi <= @EndDate
                 AND Bitis_Tarihi >= @StartDate";
             var conflictCount = await connection.ExecuteScalarAsync<int>(sql, new { AracId = aracId, StartDate = startDate, EndDate = endDate });
@@ -34,24 +34,28 @@ namespace RentACarApi.Repositories
         {
             using var connection = new MySqlConnection(_connectionString);
             await connection.OpenAsync();
-
+            
             using var transaction = await connection.BeginTransactionAsync();
 
             try
             {
-                string insertRentalSql = @"INSERT INTO Rentals (ID, Musteri_Adi, Baslangic_Tarihi, Bitis_Tarihi, Toplam_Tutar)
-VALUES (@Arac_ID, @Musteri_Adi, @Baslangic_Tarihi, @Bitis_Tarihi, @Toplam_Tutar)";
+                string insertRentalSql = @"
+                    INSERT INTO Rentals (Arac_ID, Musteri_Adi, Baslangic_Tarihi, Bitis_Tarihi, Toplam_Tutar) 
+                    VALUES (@Arac_ID, @Musteri_Adi, @Baslangic_Tarihi, @Bitis_Tarihi, @Toplam_Tutar)";
+
                 await connection.ExecuteAsync(insertRentalSql, request, transaction);
 
-                string updateCarSql = "UPDATE Cars SET Durum = 'Kirada' WHERE ID = @Arac_ID";
-                await connection.ExecuteAsync(updateCarSql, new { request.ID }, transaction);
+                string updateCarSql = "UPDATE Cars SET Durum = 'Kirada' WHERE Arac_ID = @Arac_ID";
+
+                await connection.ExecuteAsync(updateCarSql, new { request.Arac_ID }, transaction);
 
                 await transaction.CommitAsync();
                 return true;
             }
             catch
             {
-                await transaction.RollbackAsync(); throw;
+                await transaction.RollbackAsync();
+                throw;
             }
         }
     }

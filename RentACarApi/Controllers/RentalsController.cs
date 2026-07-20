@@ -20,7 +20,7 @@ namespace RentACarApi.Controllers
         public async Task<IActionResult> CreateRental([FromBody] CreateRentalRequest request)
         {
             bool isAvailable = await _rentalRepository.IsCarAvailableForDatesAsync(
-                request.ID, request.Baslangic_Tarihi, request.Bitis_Tarihi);
+                request.Arac_ID, request.Baslangic_Tarihi, request.Bitis_Tarihi);
 
             if (!isAvailable)
             {

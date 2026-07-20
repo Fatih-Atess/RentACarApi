@@ -1,11 +1,9 @@
-﻿namespace RentACarApi.Models
+﻿namespace RentACarApi.DTOs
 {
-    public class Car
+    public class AddCarDTO
     {
-        public int Arac_ID { get; set; }
         public string Marka_Model { get; set; } = string.Empty;
         public string Plaka { get; set; } = string.Empty;
         public decimal Gunluk_Fiyat { get; set; }
-        public string Durum { get; set; } = "Mevcut"; 
     }
 }

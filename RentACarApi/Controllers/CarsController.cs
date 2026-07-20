@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RentACarApi.Repositories.Interfaces;
 using System.Threading.Tasks;
+using RentACarApi.DTOs;
 
 namespace RentACarApi.Controllers
 {
@@ -26,5 +27,19 @@ namespace RentACarApi.Controllers
 
             return BadRequest("Lütfen geçerli bir durum belirtin (örn: ?status=available).");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCar(AddCarDTO car)
+        {
+            bool success = await _carRepository.AddCarAsync(car);
+
+            if (success)
+            {
+                return Ok(new {message = "Araç başarıyla eklendi"});
+            }
+
+            return StatusCode(500, "İşlem sırasında bir hata oluştu.");
+        }
+
     }
 }
