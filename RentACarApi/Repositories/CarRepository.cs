@@ -26,6 +26,30 @@ namespace RentACarApi.Repositories
 
             return await connection.QueryAsync<Car>(sql);
         }
+        public async Task<IEnumerable<Car>> GetAllCarsAsync()
+        {
+            using var connection = new MySqlConnection(_connectionString);
+
+            string sql = "SELECT * FROM Cars";
+
+            return await connection.QueryAsync<Car>(sql);
+        }
+        public async Task<IEnumerable<Car>> GetRentedCarsAsync()
+        {
+            using var connection = new MySqlConnection(_connectionString);
+
+            string sql = "SELECT * FROM Cars WHERE Durum = 'Kirada'";
+
+            return await connection.QueryAsync<Car>(sql);
+        }
+        public async Task<Car?> GetCarByPlateAsync(string plaka)
+        {
+            using var connection = new MySqlConnection(_connectionString);
+            string sql = "SELECT * FROM Cars WHERE Plaka = @Plaka";
+
+            // QueryFirstOrDefaultAsync returns the first match, or null if no record is found
+            return await connection.QueryFirstOrDefaultAsync<Car>(sql, new { Plaka = plaka });
+        }
 
         public async Task<bool> AddCarAsync(AddCarDTO car)
         {
