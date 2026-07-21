@@ -54,6 +54,19 @@ namespace RentACarApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCar(AddCarDTO car)
         {
+            if(car.Plaka == "")
+            {
+                return BadRequest("Lütfen bir araç plakası giriniz.");
+            }
+            if(car.Marka_Model == "")
+            {
+                return BadRequest("Lütfen marka/model giriniz.");
+            }
+            if(car.Gunluk_Fiyat <= 0)
+            {
+                return BadRequest("Lütfen geçerli bir fiyat giriniz.");
+            }
+
             bool success = await _carRepository.AddCarAsync(car);
 
             if (success)
