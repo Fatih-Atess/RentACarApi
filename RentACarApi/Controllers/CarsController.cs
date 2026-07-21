@@ -17,16 +17,39 @@ namespace RentACarApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCars([FromQuery] string status)
+        public async Task<IActionResult> GetCars([FromQuery] string? status)
         {
-            if (status == "available")
+            if (status == "mevcut")
             {
                 var availableCars = await _carRepository.GetAvailableCarsAsync();
                 return Ok(availableCars); 
             }
+            if (string.IsNullOrWhiteSpace(status))
+            {
+                var allCars = await _carRepository.GetAllCarsAsync();
+                return Ok(allCars);
+            }
+            if(status == "kirada")
+            {
+                var rentedCars = await _carRepository.GetRentedCarsAsync();
+                return Ok(rentedCars);
+            }
 
-            return BadRequest("Lütfen geçerli bir durum belirtin (örn: ?status=available).");
+            return BadRequest("Lütfen geçerli bir durum belirtin (örn: ?status=mevcut).");
         }
+
+        [HttpGet("{plaka}")]
+        public async Task<IActionResult> GetCarByPlate(string plaka)
+        {
+            var car = await _carRepository.GetCarByPlateAsync(plaka);
+
+            if(car == null)
+            {
+                return NotFound(new { message = $"Sistemde '{plaka}' plakalı araç bulunamadı." });
+            }
+            return Ok(car);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> AddCar(AddCarDTO car)
