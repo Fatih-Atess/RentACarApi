@@ -8,6 +8,10 @@ namespace RentACarApi.Repositories.Interfaces
     public interface ICarRepository
     {
         Task<IEnumerable<Car>> GetAvailableCarsAsync();
+        Task<IEnumerable<Car>> GetAllCarsAsync();
+        Task<IEnumerable<Car>> GetRentedCarsAsync();
+        Task<IEnumerable<Car>> GetCarByPlateAsync(string plaka);
+
         Task<bool> AddCarAsync(AddCarDTO car);
     }
 }
