@@ -17,6 +17,12 @@ export class App implements OnInit {
   searchPlate: string = '';
   searchStatus: string = '';
 
+  newCarData: any = {
+    marka_Model: '',
+    plaka: '',
+    gunluk_Fiyat: 0
+  };
+
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
@@ -62,6 +68,26 @@ export class App implements OnInit {
       error: (error) => {
         console.log('Araba bulunamadı', error);
         this.cars = [];
+      }
+    });
+  }
+
+  saveNewCar() {
+    this.apiService.addCar(this.newCarData).subscribe({
+      next: (response) => {
+        alert('Araç başarıyla eklendi.');
+
+        this.loadCars();
+
+        this.newCarData = {
+          marka_Model: '',
+          plaka: '',
+          gunluk_Fiyat: 0
+        };
+      },
+      error: (err) => {
+        console.error('Araba ekleme hatası:', err);
+        alert('Araba eklenemedi.Detaylı bilgi için konsola bakın.');
       }
     });
   }

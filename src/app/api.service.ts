@@ -28,4 +28,7 @@ export class ApiService {
   getCarsByStatus(status: string): Observable<Car[]> {
     return this.http.get<Car[]>(`${this.baseUrl}/cars/?status=${status}`);
   }
+  addCar(newCar: Car): Observable<Car> {
+    return this.http.post<Car>(`${this.baseUrl}/cars`, newCar);
+  }
 }
