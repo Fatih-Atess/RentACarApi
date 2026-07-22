@@ -20,6 +20,6 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   getAllCars(): Observable<Car[]> {
-    return this.http.get<Car[]>('${this.baseUrl}/cars');
+    return this.http.get<Car[]>(`${this.baseUrl}/cars`);
   }
 }

@@ -16,7 +16,23 @@
 
   <section style="background-color: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
     <h2>Available Vehicles</h2>
-    <p>We will display the list of cars and a "Rent" button here later.</p>
+
+    @for(car of cars; track car.arac_ID){
+    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 4px; background: white;">
+
+      <h3 style="margin-top: 0; color: #2c3e50;">{{ car.marka_Model }}</h3>
+      <p><strong>Plate:</strong> {{ car.plaka }}</p>
+      <p><strong>Price:</strong> {{ car.gunluk_Fiyat }} ₺ / day</p>
+      <p><strong>Status:</strong> {{ car.durum }}</p>
+
+      <button
+        style="padding: 10px 15px; background-color: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        Rent This Car
+      </button>
+    </div>
+    }@empty {
+    <p>No cars are currently available in the system.</p>
+    }
   </section>
 
 </main>
