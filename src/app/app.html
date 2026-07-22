@@ -10,12 +10,33 @@
   </section>
 
   <section style="background-color: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
-    <h2>Search Car by Plate</h2>
-    <p>We will put a search box here later.</p>
+    <h2>Duruma Göre Arabaları Listele</h2>
+
+    <div style="display: flex; gap: 10px">
+      <input type="text" [(ngModel)]="searchStatus" placeholder="Enter Status (e.g. mevcut)"
+        style="padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 4px;">
+      <button (click)="searchCarByStatus()"
+        style="padding: 10px 15px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        Search
+      </button>
+    </div>
   </section>
 
   <section style="background-color: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
-    <h2>Available Vehicles</h2>
+    <h2>Plakaya Göre Araç Ara</h2>
+
+    <div style="display: flex; gap: 10px">
+      <input type="text" [(ngModel)]="searchPlate" placeholder="Enter Plate (e.g. 07 ABC 123)"
+        style="padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 4px;">
+      <button (click)="searchCarByPlate()"
+        style="padding: 10px 15px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        Search
+      </button>
+    </div>
+  </section>
+
+  <section style="background-color: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
+    <h2>Araçlar</h2>
 
     @for(car of cars; track car.arac_ID){
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 4px; background: white;">

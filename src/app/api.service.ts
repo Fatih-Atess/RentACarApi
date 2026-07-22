@@ -22,4 +22,10 @@ export class ApiService {
   getAllCars(): Observable<Car[]> {
     return this.http.get<Car[]>(`${this.baseUrl}/cars`);
   }
+  getCarByPlate(plate: string): Observable<Car> {
+    return this.http.get<Car>(`${this.baseUrl}/cars/${plate}`);
+  }
+  getCarsByStatus(status: string): Observable<Car[]> {
+    return this.http.get<Car[]>(`${this.baseUrl}/cars/?status=${status}`);
+  }
 }
