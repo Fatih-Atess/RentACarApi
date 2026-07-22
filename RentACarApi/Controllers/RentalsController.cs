@@ -19,6 +19,35 @@ namespace RentACarApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRental([FromBody] CreateRentalRequest request)
         {
+            if(request.Arac_ID == 0)
+            {
+                return BadRequest("Lütfen geçerli bir araç id'si giriniz.");
+            }
+            if(request.Toplam_Tutar <= 0)
+            {
+                return BadRequest("Lütfen geçerli bir tutar girniz.");
+            }
+            if(request.Musteri_Adi == "")
+            {
+                return BadRequest("Müşteri adı boş bırakılamaz.");
+            }
+            if(request.Baslangic_Tarihi >= request.Bitis_Tarihi)
+            {
+                return BadRequest("Başlangıç tarihi bitiş tarihinden ileride olamaz.");
+            }
+            if(request.Baslangic_Tarihi == null)
+            {
+                return BadRequest("Lütfen bir başlangıç tarihi giriniz.");
+            }
+            if(request.Bitis_Tarihi == null)
+            {
+                return BadRequest("Lütfen bir bitiş tarihi giriniz.");
+            }
+            if (await _rentalRepository.IsCarExist(request.Arac_ID) == false)
+            {
+                return BadRequest("Lütfen geçerli bir araç id'si giriniz.");
+            }
+
             bool isAvailable = await _rentalRepository.IsCarAvailableForDatesAsync(
                 request.Arac_ID, request.Baslangic_Tarihi, request.Bitis_Tarihi);
 

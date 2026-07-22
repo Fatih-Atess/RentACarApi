@@ -9,5 +9,6 @@ namespace RentACarApi.Repositories.Interfaces
     {
         Task<bool> IsCarAvailableForDatesAsync(int aracId, DateTime startDate, DateTime endTime);
         Task<bool> RentCarWithTransactionAsync(CreateRentalRequest request);
+        Task<bool> IsCarExist(int id);
     }
 }

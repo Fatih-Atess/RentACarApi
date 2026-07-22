@@ -30,6 +30,15 @@ namespace RentACarApi.Repositories
             return conflictCount == 0;
         }
 
+        public async Task<bool> IsCarExist(int id)
+        {
+            using var connection = new MySqlConnection(_connectionString);
+
+            var sql = "SELECT CASE WHEN EXISTS (SELECT 1 FROM Cars WHERE Arac_ID = @Id) THEN 1 ELSE 0 END";
+
+            return await connection.ExecuteScalarAsync<bool>(sql, new { Id = id });
+        }
+
         public async Task<bool> RentCarWithTransactionAsync(CreateRentalRequest request)
         {
             using var connection = new MySqlConnection(_connectionString);
