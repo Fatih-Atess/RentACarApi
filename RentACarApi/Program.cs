@@ -25,6 +25,7 @@ builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<IRentalRepository, RentalRepository>();
 
 var app = builder.Build();
+// test
 
 app.UseCors("AllowFrontend");
 
