@@ -42,6 +42,8 @@ app.UseCors(policy =>
           .AllowAnyHeader()
 );
 
+//fatih
+
 //app.UseHttpsRedirection();
 
 app.UseAuthorization();
