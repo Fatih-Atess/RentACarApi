@@ -56,7 +56,28 @@
     </div>
   </section>
 
-  @if (selectedCarForRent) {
+  <section style="background-color: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
+    <h2>Araçlar</h2>
+
+    @for(car of cars; track car.arac_ID){
+    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 4px; background: white;">
+
+      <h3 style="margin-top: 0; color: #2c3e50;">{{ car.marka_Model }}</h3>
+      <p><strong>Plaka:</strong> {{ car.plaka }}</p>
+      <p><strong>Ücret:</strong> {{ car.gunluk_Fiyat }} ₺ / günlük</p>
+      <p><strong>Durum:</strong> {{ car.durum }}</p>
+
+      <button (click)="selectCarForRent(car)"
+        style="padding: 10px 15px; background-color: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        Bu Aracı Kirala
+      </button>
+    </div>
+    }@empty {
+    <p>Sistemde uygun araç bulunamadı.</p>
+    }
+  </section>
+
+   @if (selectedCarForRent) {
   <section
     style="background-color: #e8f6f3; padding: 20px; margin-bottom: 20px; border-radius: 8px; border: 2px solid #1abc9c;">
 
@@ -96,26 +117,43 @@
   </section>
   }
 
-  <section style="background-color: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
-    <h2>Araçlar</h2>
+  <section style="margin-top: 40px;">
+    <h2 style="color: #2c3e50; border-bottom: 2px solid #bdc3c7; padding-bottom: 10px;">Rental History</h2>
 
-    @for(car of cars; track car.arac_ID){
-    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 4px; background: white;">
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <thead style="background-color: #34495e; color: white; text-align: left;">
+        <tr>
+          <th style="padding: 12px; border: 1px solid #ddd;">Müşteri Adı</th>
+          <th style="padding: 12px; border: 1px solid #ddd;">Araç ID</th>
+          <th style="padding: 12px; border: 1px solid #ddd;">Başlangıç Tarihi</th>
+          <th style="padding: 12px; border: 1px solid #ddd;">Bitiş Tarihi</th>
+          <th style="padding: 12px; border: 1px solid #ddd;">Toplam Tutar</th>
+        </tr>
+      </thead>
+      <tbody>
 
-      <h3 style="margin-top: 0; color: #2c3e50;">{{ car.marka_Model }}</h3>
-      <p><strong>Plaka:</strong> {{ car.plaka }}</p>
-      <p><strong>Ücret:</strong> {{ car.gunluk_Fiyat }} ₺ / günlük</p>
-      <p><strong>Durum:</strong> {{ car.durum }}</p>
+        @for (rental of rentals; track rental.arac_ID) {
+          <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 12px;">{{ rental.musteri_Adi }}</td>
+            <td style="padding: 12px;">{{ rental.arac_ID }}</td>
+            <td style="padding: 12px;">{{ rental.baslangic_Tarihi }}</td>
+            <td style="padding: 12px;">{{ rental.bitis_Tarihi }}</td>
+            <td style="padding: 12px; font-weight: bold; color: #27ae60;">{{ rental.toplam_Tutar }} ₺</td>
+          </tr>
+        } 
+        @empty {
+          <tr>
+            <td colspan="5" style="padding: 20px; text-align: center; color: #7f8c8d;">
+              Sistemde kiralık araç bulunamadı.
+            </td>
+          </tr>
+        }
 
-      <button (click)="selectCarForRent(car)"
-        style="padding: 10px 15px; background-color: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer;">
-        Bu Aracı Kirala
-      </button>
-    </div>
-    }@empty {
-    <p>Sistemde uygun araç bulunamadı.</p>
-    }
+      </tbody>
+    </table>
   </section>
+
+
 
   <!-- Error Modal Pop-up -->
   @if (errorMessage) {

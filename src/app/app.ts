@@ -18,6 +18,7 @@ export class App implements OnInit {
   searchStatus: string = '';
 
   selectedCarForRent: Car | null = null;
+  rentals: any[] = [];
 
   errorMessage: string = '';
 
@@ -40,6 +41,21 @@ export class App implements OnInit {
 
   ngOnInit() {
     this.loadCars();
+    this.loadRentals();
+
+  }
+
+  loadRentals(){
+    this.apiService.getAllRentals().subscribe({
+      next: (data) => {
+                this.errorMessage = '';
+
+        this.rentals = data;
+      },
+      error: (err) => {
+        this.errorMessage = err.error || err.message || 'Kiralık araçlar listelenirken hata meydana geldi';
+      }
+    });
   }
 
   loadCars() {
@@ -131,6 +147,7 @@ export class App implements OnInit {
         };
 
         this.loadCars();
+        this.loadRentals();
       },
       error: (err) => {
         console.error('Hata:', err);
