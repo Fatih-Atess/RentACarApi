@@ -17,6 +17,17 @@ export class App implements OnInit {
   searchPlate: string = '';
   searchStatus: string = '';
 
+  selectedCarForRent: Car | null = null;
+
+  rentalData: any = {
+    arac_ID: 0,
+    musteri_Adi: '',
+    baslangic_Tarihi: '',
+    bitis_Tarihi: '',
+    toplam_Tutar: 0
+
+  }
+
   newCarData: any = {
     marka_Model: '',
     plaka: '',
@@ -88,6 +99,35 @@ export class App implements OnInit {
       error: (err) => {
         console.error('Araba ekleme hatası:', err);
         alert('Araba eklenemedi.Detaylı bilgi için konsola bakın.');
+      }
+    });
+  }
+
+  selectCarForRent(car: Car) {
+    this.selectedCarForRent = car;
+    this.rentalData.arac_ID = car.arac_ID;
+  }
+
+  confirmRental() {
+    this.apiService.rentCar(this.rentalData).subscribe({
+      next: (response) => {
+        alert('Araba başarıyla kiralandı!');
+
+        this.selectedCarForRent = null;
+
+        this.rentalData = {
+          arac_ID: 0,
+          musteri_Adi: '',
+          baslangic_Tarihi: '',
+          bitis_Tarihi: '',
+          toplam_Tutar: 0
+        };
+
+        this.loadCars();
+      },
+      error: (err) => {
+        console.error('Hata:', err);
+        alert('Araba kiralama başarısız.');
       }
     });
   }

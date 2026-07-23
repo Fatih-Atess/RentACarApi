@@ -15,20 +15,23 @@ export interface Car {
 })
 export class ApiService {
 
-  private baseUrl = 'https://localhost:7101/api';
+  private baseUrl = 'http://localhost:5000/api';
 
   constructor(private http: HttpClient) { }
 
   getAllCars(): Observable<Car[]> {
-    return this.http.get<Car[]>(`${this.baseUrl}/cars`);
+    return this.http.get<Car[]>(`${this.baseUrl}/Cars`);
   }
   getCarByPlate(plate: string): Observable<Car> {
-    return this.http.get<Car>(`${this.baseUrl}/cars/${plate}`);
+    return this.http.get<Car>(`${this.baseUrl}/Cars/${plate}`);
   }
   getCarsByStatus(status: string): Observable<Car[]> {
-    return this.http.get<Car[]>(`${this.baseUrl}/cars/?status=${status}`);
+    return this.http.get<Car[]>(`${this.baseUrl}/Cars/?status=${status}`);
   }
   addCar(newCar: Car): Observable<Car> {
-    return this.http.post<Car>(`${this.baseUrl}/cars`, newCar);
+    return this.http.post<Car>(`${this.baseUrl}/Cars`, newCar);
+  }
+  rentCar(rentalData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/Rentals`, rentalData);
   }
 }

@@ -1,5 +1,5 @@
 <header style="background-color: #2c3e50; color: white; padding: 20px; text-align: center;">
-  <h1 style="margin: 0;">Rent-A-Car Management System</h1>
+  <h1 style="margin: 0;">Araç Kiralama Sistemi</h1>
 </header>
 
 <main style="max-width: 1000px; margin: 20px auto; padding: 0 20px; font-family: sans-serif;">
@@ -38,7 +38,7 @@
         style="padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 4px;">
       <button (click)="searchCarByStatus()"
         style="padding: 10px 15px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
-        Search
+        Ara
       </button>
     </div>
   </section>
@@ -51,10 +51,50 @@
         style="padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 4px;">
       <button (click)="searchCarByPlate()"
         style="padding: 10px 15px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
-        Search
+        Ara
       </button>
     </div>
   </section>
+
+  @if (selectedCarForRent) {
+  <section
+    style="background-color: #e8f6f3; padding: 20px; margin-bottom: 20px; border-radius: 8px; border: 2px solid #1abc9c;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2 style="margin-top: 0; color: #16a085;">Kiralamayı Tamamla: {{ selectedCarForRent.marka_Model }}</h2>
+      <button (click)="selectedCarForRent = null"
+        style="background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 16px;">İptal ✖</button>
+    </div>
+
+    <p><strong>Plaka:</strong> {{ selectedCarForRent.plaka }} | <strong>Günlük Ücret:</strong> {{
+      selectedCarForRent.gunluk_Fiyat }} ₺</p>
+
+    <div style="display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin-top: 15px;">
+
+      <label>Müşteri Adı:</label>
+      <input type="text" [(ngModel)]="rentalData.musteri_Adi" placeholder="Ahmet Yılmaz"
+        style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+
+      <label>Başlangıç Tarihi:</label>
+      <input type="date" [(ngModel)]="rentalData.baslangic_Tarihi"
+        style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+
+      <label>Bitiş Tarihi:</label>
+      <input type="date" [(ngModel)]="rentalData.bitis_Tarihi"
+        style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+
+      <label>Toplam Tutar (₺):</label>
+      <input type="number" [(ngModel)]="rentalData.toplam_Tutar" placeholder="0"
+        style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+
+      <button (click)="confirmRental()"
+        style="padding: 10px; background-color: #1abc9c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px;">
+        Onayla ve Öde
+      </button>
+
+    </div>
+  </section>
+  }
 
   <section style="background-color: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
     <h2>Araçlar</h2>
@@ -63,17 +103,17 @@
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 4px; background: white;">
 
       <h3 style="margin-top: 0; color: #2c3e50;">{{ car.marka_Model }}</h3>
-      <p><strong>Plate:</strong> {{ car.plaka }}</p>
-      <p><strong>Price:</strong> {{ car.gunluk_Fiyat }} ₺ / day</p>
-      <p><strong>Status:</strong> {{ car.durum }}</p>
+      <p><strong>Plaka:</strong> {{ car.plaka }}</p>
+      <p><strong>Ücret:</strong> {{ car.gunluk_Fiyat }} ₺ / günlük</p>
+      <p><strong>Durum:</strong> {{ car.durum }}</p>
 
-      <button
+      <button (click)="selectCarForRent(car)"
         style="padding: 10px 15px; background-color: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer;">
-        Rent This Car
+        Bu Aracı Kirala
       </button>
     </div>
     }@empty {
-    <p>No cars are currently available in the system.</p>
+    <p>Sistemde uygun araç bulunamadı.</p>
     }
   </section>
 
