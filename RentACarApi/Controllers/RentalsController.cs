@@ -65,5 +65,13 @@ namespace RentACarApi.Controllers
 
             return StatusCode(500, "İşlem sırasında bir hata oluştu.");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllRentals()
+        {
+            var rentals = await _rentalRepository.GetAllRentalsAsync();
+            return Ok(rentals);
+        }
+
     }
 }

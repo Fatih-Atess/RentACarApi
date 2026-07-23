@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
 using RentACarApi.DTOs;
+using RentACarApi.Models;
 using RentACarApi.Repositories.Interfaces;
 using System;
 using System.Threading.Tasks;
@@ -66,6 +67,15 @@ namespace RentACarApi.Repositories
                 await transaction.RollbackAsync();
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<Rental>> GetAllRentalsAsync()
+        {
+            using var connection = new MySqlConnection(_connectionString);
+
+            string sql = "SELECT * FROM Rentals";
+
+            return await connection.QueryAsync<Rental>(sql);
         }
     }
 }
