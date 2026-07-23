@@ -6,6 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") // Replace with your actual frontend URL
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // Swagger (OpenAPI) dokümantasyonu için gerekli servisler
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -16,6 +26,8 @@ builder.Services.AddScoped<IRentalRepository, RentalRepository>();
 
 var app = builder.Build();
 
+app.UseCors("AllowFrontend");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -24,7 +36,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(policy =>
+    policy.WithOrigins("http://localhost:4200")
+          .AllowAnyMethod()
+          .AllowAnyHeader()
+);
+
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

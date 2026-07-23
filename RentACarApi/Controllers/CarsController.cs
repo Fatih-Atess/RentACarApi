@@ -45,7 +45,7 @@ namespace RentACarApi.Controllers
 
             if(car == null)
             {
-                return NotFound(new { message = $"Sistemde '{plaka}' plakalı araç bulunamadı." });
+                return NotFound($"Sistemde '{plaka}' plakalı araç bulunamadı.");
             }
             return Ok(car);
         }
@@ -65,6 +65,10 @@ namespace RentACarApi.Controllers
             if(car.Gunluk_Fiyat <= 0)
             {
                 return BadRequest("Lütfen geçerli bir fiyat giriniz.");
+            }
+            if(await _carRepository.GetCarByPlateAsync(car.Plaka) != null)
+            {
+                return BadRequest("Girmiş olduğunu plakalı araç zaten mevcut lütfen başka bir plaka giriniz");
             }
 
             bool success = await _carRepository.AddCarAsync(car);

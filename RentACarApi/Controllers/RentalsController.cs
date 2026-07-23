@@ -45,7 +45,7 @@ namespace RentACarApi.Controllers
             }
             if (await _rentalRepository.IsCarExist(request.Arac_ID) == false)
             {
-                return BadRequest("Lütfen geçerli bir araç id'si giriniz.");
+                return NotFound("Bu id numrasanına sahip araç bulunamadı.");
             }
 
             bool isAvailable = await _rentalRepository.IsCarAvailableForDatesAsync(
@@ -53,7 +53,7 @@ namespace RentACarApi.Controllers
 
             if (!isAvailable)
             {
-                return Conflict(new { message = "Seçilen tarihler arasında bu araç zaten kiralanmış." });
+                return Conflict("Seçilen tarihler arasında bu araç zaten kiralanmış." );
             }
 
             bool success = await _rentalRepository.RentCarWithTransactionAsync(request);
