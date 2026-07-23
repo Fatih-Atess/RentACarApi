@@ -19,6 +19,8 @@ export class App implements OnInit {
 
   selectedCarForRent: Car | null = null;
 
+  errorMessage: string = '';
+
   rentalData: any = {
     arac_ID: 0,
     musteri_Adi: '',
@@ -43,10 +45,11 @@ export class App implements OnInit {
   loadCars() {
     this.apiService.getAllCars().subscribe({
       next: (data) => {
+        this.errorMessage = '';
         this.cars = data;
       },
-      error: (error) => {
-        console.log('Araba getirilemedi', error);
+      error: (err) => {
+        this.errorMessage = err.error || err.message || 'Araba listelenirken hata meydana geldi.';
       }
     });
   }
@@ -58,10 +61,11 @@ export class App implements OnInit {
     }
     this.apiService.getCarByPlate(this.searchPlate).subscribe({
       next: (data) => {
+        this.errorMessage = '';
         this.cars = [data];
       },
-      error: (error) => {
-        console.log('Araba bulunamadı', error);
+      error: (err) => {
+        this.errorMessage = err.error || err.message || 'Araba ararken hata meydana geldi.';
         this.cars = [];
       }
     });
@@ -74,10 +78,11 @@ export class App implements OnInit {
     }
     this.apiService.getCarsByStatus(this.searchStatus).subscribe({
       next: (data) => {
+        this.errorMessage = '';
         this.cars = data;
       },
-      error: (error) => {
-        console.log('Araba bulunamadı', error);
+      error: (err) => {
+        this.errorMessage = err.error || err.message || 'Araba ararken hata meydana geldi.';
         this.cars = [];
       }
     });
@@ -86,6 +91,7 @@ export class App implements OnInit {
   saveNewCar() {
     this.apiService.addCar(this.newCarData).subscribe({
       next: (response) => {
+        this.errorMessage = '';
         alert('Araç başarıyla eklendi.');
 
         this.loadCars();
@@ -98,7 +104,7 @@ export class App implements OnInit {
       },
       error: (err) => {
         console.error('Araba ekleme hatası:', err);
-        alert('Araba eklenemedi.Detaylı bilgi için konsola bakın.');
+        this.errorMessage = err.error || err.message || 'Araba eklenirken hata oldu. Lütfen verilerinizi kontrol ediniz.';
       }
     });
   }
@@ -111,6 +117,7 @@ export class App implements OnInit {
   confirmRental() {
     this.apiService.rentCar(this.rentalData).subscribe({
       next: (response) => {
+        this.errorMessage = '';
         alert('Araba başarıyla kiralandı!');
 
         this.selectedCarForRent = null;
@@ -127,7 +134,7 @@ export class App implements OnInit {
       },
       error: (err) => {
         console.error('Hata:', err);
-        alert('Araba kiralama başarısız.');
+        this.errorMessage = err.error || err.message || 'Araba kiralama başarısız. Lütfen verilerinizi kontrol ediniz.';
       }
     });
   }
